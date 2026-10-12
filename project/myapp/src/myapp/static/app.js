@@ -18,6 +18,7 @@ function createNode(value) {
 
 function removeNode(node) {
     node.classList.add("removing");
+    setTimeout(() => node.remove(), 300)
     node.addEventListener("animationend", (e) => {
         if (e.target==node) node.remove();
     });
@@ -87,6 +88,7 @@ function remove(list, value) {
 
                     // 3. Found it? Fade it out and stop looking
                     if (box.textContent === value) {
+                        console.log("matched", value)
                         removeNode(item);
                         return;
                     }
