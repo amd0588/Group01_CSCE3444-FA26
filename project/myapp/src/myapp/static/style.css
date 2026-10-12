@@ -16,6 +16,10 @@ header {
     display: flex;
 }
 
+.logo-img {
+    width: 200px;
+}
+
 .main-navigation > ul {
     list-style: none;
     display: flex;
@@ -232,4 +236,38 @@ input {
 @keyframes pop-out {
     from { transform: scale(1); opacity: 1; }
     to   { transform: scale(0); opacity: 0; }
+}
+
+.stage.linked-list {
+    gap: 0;
+}
+
+.ll-item {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    animation: pop-in 0.3s ease-in fowards;
+}
+
+.ll-item.removing {
+    animation: pop-out 0.3s ease-in fowards;
+}
+
+.ll-item .node {
+    animation: none;
+    transition: background 0.2s;
+}
+
+.arrow {
+    font-size: 28px;
+    padding: 0 10px;
+}
+
+/* the last node has nothing to point at, so hide its arrow */
+.ll-item:last-child .arrow {
+    display: none;
+}
+
+.node.highlight {
+    background: tan;
 }

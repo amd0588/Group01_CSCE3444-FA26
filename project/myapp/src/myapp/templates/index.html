@@ -11,7 +11,7 @@
         <header>
         <!-- The semantic navigation container -->
             <nav class="main-navigation">
-                <div class="logo">MyWebsite</div>
+                <div class="logo"><img class="logo-img" src="../static/images/dsexplorer-logo-tan.svg" alt="DSExplorer"></div> <!--<img src="{{ url_for('static', filename='images/dsexplorer-logo-tan.svg') }}" alt="Logo">-->
                 <ul>
                     <li class="dropdown">
                         <button class="data-dropdown">Data Structures</button>
@@ -76,8 +76,8 @@
 
                 <div class="controls">
                     <ul>
-                        <li><input type="text" id="value" name="value" placeholder="Enter value e.g. 30"> <button id="add" class="action-button">Add element</button></li>
-                        <li><input type="text" id="value" name="value" placeholder="Enter value e.g. 30"> <button id="remove" class="action-button">Remove element</button></li>
+                        <li><input type="text" id="add-value" name="add-value" placeholder="Enter value e.g. 30"> <button id="add" class="action-button">Add element</button></li>
+                        <li><input type="text" id="remove-value" name="remove-value" placeholder="Enter value e.g. 30"> <button id="remove" class="action-button">Remove element</button></li>
                     </ul>
 
                     <div class="refresh">
