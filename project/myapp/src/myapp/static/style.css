@@ -238,6 +238,7 @@ input {
     to   { transform: scale(0); opacity: 0; }
 }
 
+/* linked list */
 .stage.linked-list {
     gap: 0;
 }
@@ -271,3 +272,27 @@ input {
 .node.highlight {
     background: tan;
 }
+
+/* binary search tree*/
+.stage.bst {
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.stage.bst .node { animation: none; }
+.stage.bst .node.new { animation: pop-in 0.3s ease-out; }
+
+.bst-subtree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bst-children {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    align-items: flex-start;
+}
+
+.bst-spacer { width: 60px; }

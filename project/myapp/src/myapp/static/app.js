@@ -43,6 +43,74 @@ function createListItem(value) {
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+let bstRoot = null;
+
+//takes care of the inser
+function bstInsert(node, value) {
+    if (!node) return { value, left: null, right: null };
+    if (value < node.value) node.left = bstInsert(node.left, value);
+    else if (value > node.value) node.right = bstInsert(node.right, value);
+    return node;
+}
+//takes care of deleting
+function bstDelete(node, value) {
+    if (!node) return null;
+    if (value < node.value) node.left = bstDelete(node.left, value);
+    else if (value > node.value) node.right = bstDelete(node.right, value);
+    else {
+        if (!node.left) return node.right;
+        if (!node.right) return node.left;
+        let next = node.right;                 // smallest value on the right
+        while (next.left) next = next.left;
+        node.value = next.value;
+        node.right = bstDelete(node.right, next.value);
+    }
+    return node;
+}
+//builds the tree
+function bstBuild(node, newValue) {
+    const subtree = document.createElement("div");
+    subtree.className = "bst-subtree";
+
+    const box = document.createElement("div");
+    box.className = "node" + (node.value === newValue ? " new" : "");
+    box.textContent = node.value;
+    box.dataset.value = node.value;
+    subtree.appendChild(box);
+
+    if (node.left || node.right) {
+        const kids = document.createElement("div");
+        kids.className = "bst-children";
+        for (const child of [node.left, node.right]) {
+            if (child) kids.appendChild(bstBuild(child, newValue));
+            else {
+                const spacer = document.createElement("div");
+                spacer.className = "bst-spacer";
+                kids.appendChild(spacer);
+            }
+        }
+        subtree.appendChild(kids);
+    }
+    return subtree;
+}
+//builds visual
+function bstRender(newValue) {
+    stage.innerHTML = "";
+    if (bstRoot) stage.appendChild(bstBuild(bstRoot, newValue));
+}
+//takes care of highlighting
+async function bstHighlightPath(value) {
+    let n = bstRoot;
+    while (n) {
+        const box = stage.querySelector(`[data-value="${n.value}"]`);
+        box.classList.add("highlight");
+        await sleep(400);
+        box.classList.remove("highlight");
+        if (value === n.value) return;
+        n = value < n.value ? n.left : n.right;
+    }
+}
+
 // ---------- One object per data structure ----------
 const structures = {
     "Linked List": {
@@ -144,6 +212,31 @@ function dequeue(queue) {
             // always removes the front (first) node
             const front = stage.querySelector(".node:not(.removing)");
             if (front) removeNode(front);
+        }
+    },
+
+    "Binary Search Tree": {
+        stageClass: "bst",
+        code: `function add(tree, value) {
+  tree.insert(value)
+}`,
+        description: `<h3>Binary Search Tree</h3>
+        <p>L</p>
+        <ul>
+            <li>add</li>
+            <li>delete</li>
+        </ul>`,
+        async add(value) {
+            const v = Number(value);
+            await bstHighlightPath(v);       // walk down the existing tree
+            bstRoot = bstInsert(bstRoot, v);
+            bstRender(v);
+        },
+        async remove(value) {
+            const v = Number(value);
+            await bstHighlightPath(v);
+            bstRoot = bstDelete(bstRoot, v);
+            bstRender();
         }
     }
 };
