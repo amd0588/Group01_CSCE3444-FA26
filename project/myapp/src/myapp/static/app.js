@@ -300,5 +300,12 @@ tabs.forEach(tab => {
     });
 });
 
+// ---------- Refresh button ---------
+document.getElementById("refresh").addEventListener("click", () => {
+    selectStructure(title.textContent);   // re-selects the current structure
+    addInput.value = "";
+    removeInput.value = "";
+});
+
 // ---------- Initial load ----------
 selectStructure("Linked List");
