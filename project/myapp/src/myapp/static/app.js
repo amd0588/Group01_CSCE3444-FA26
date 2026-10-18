@@ -1,5 +1,5 @@
 let busy = false;
-
+let animationVersion = 0;
 // ---------- Shared elements ----------
 const stage = document.getElementById("stage");
 const addInput = document.getElementById("add-value");
@@ -20,7 +20,7 @@ function removeNode(node) {
     node.classList.add("removing");
     setTimeout(() => node.remove(), 300)
     node.addEventListener("animationend", (e) => {
-        if (e.target==node) node.remove();
+        if (e.target == node) node.remove();
     });
 }
 
@@ -100,28 +100,43 @@ function bstRender(newValue) {
 }
 //takes care of highlighting
 async function bstHighlightPath(value) {
+    const version = animationVersion;
     let n = bstRoot;
+
     while (n) {
         const box = stage.querySelector(`[data-value="${n.value}"]`);
+        if (!box) return false;
+
         box.classList.add("highlight");
         await sleep(400);
         box.classList.remove("highlight");
-        if (value === n.value) return;
+
+        if (version !== animationVersion) return false;
+        if (value === n.value) return true;
+
         n = value < n.value ? n.left : n.right;
     }
+
+    return true;
 }
 
 // ---------- One object per data structure ----------
 const structures = {
     "Linked List": {
         stageClass: "linked-list",
-        code: `function add(list, value) {
-  list.append(value);
-}
+        code: `// Linked list pseudocode
 
-function remove(list, value) {
-  list.delete(value);
-}`,
+// Add a value:
+Create a new node containing the value.
+If the list is empty, make it the head.
+Otherwise, follow next pointers to the last node.
+Link the last node to the new node.
+
+// Remove the first matching value:
+Search from the head for the value.
+If it is the head, move head to the next node.
+Otherwise, link the previous node to the next node.
+If no match exists, report "Value not found."`,
         description: `<h3>Linked List</h3>
 <p>A linked list stores values in nodes, and each node points to the next one.</p>
 <ul>
@@ -129,12 +144,15 @@ function remove(list, value) {
   <li>Search: O(n)</li>
 </ul>`,
         async add(value) {
+            const version = animationVersion;
             // 1. Walk down the existing list, lighting up each node
             const items = stage.querySelectorAll(".ll-item:not(.removing)");
             for (const item of items) {
                 const box = item.querySelector(".node");
                 box.classList.add("highlight");
                 await sleep(400);
+
+                if (version !== animationVersion) return;
                 box.classList.remove("highlight");
             }
 
@@ -145,13 +163,18 @@ function remove(list, value) {
         async remove(value) {
             if (busy) return;
             busy = true;
+            const version = animationVersion;
             try {
                 const items = Array.from(stage.querySelectorAll(".ll-item:not(.removing)"));
-
+                if (items.length === 0) {
+                    alert("The linked list is empty.");
+                    return;
+                }
                 for (const item of items) {
                     const box = item.querySelector(".node");
                     box.classList.add("highlight");
                     await sleep(400);
+                    if (version !== animationVersion) return;
                     box.classList.remove("highlight");
 
                     // 3. Found it? Fade it out and stop looking
@@ -160,7 +183,7 @@ function remove(list, value) {
                         removeNode(item);
                         return;
                     }
-                }
+                } alert("Value not found.");
             } finally {
                 busy = false;
             }
@@ -187,7 +210,12 @@ function pop(stack) {
         remove() {
             // always removes the top (last) node
             const top = stage.querySelector(".node:last-child:not(.removing)");
-            if (top) removeNode(top);
+
+            if (top) {
+                removeNode(top);
+            } else {
+                alert("The stack is empty.");
+            }
         }
     },
 
@@ -211,15 +239,22 @@ function dequeue(queue) {
         remove() {
             // always removes the front (first) node
             const front = stage.querySelector(".node:not(.removing)");
-            if (front) removeNode(front);
+
+            if (front) {
+                removeNode(front);
+            } else {
+                alert("The queue is empty.");
+            }
         }
     },
 
     "Binary Search Tree": {
         stageClass: "bst",
-        code: `function add(tree, value) {
-  tree.insert(value)
-}`,
+        code: `// Insert a value and keep the updated root.
+bstRoot = bstInsert(bstRoot, value);
+
+// Delete a value and keep the updated root.
+bstRoot = bstDelete(bstRoot, value);`,
         description: `<h3>Binary Search Tree</h3>
         <p>L</p>
         <ul>
@@ -228,13 +263,33 @@ function dequeue(queue) {
         </ul>`,
         async add(value) {
             const v = Number(value);
-            await bstHighlightPath(v);       // walk down the existing tree
+
+            if (await bstHighlightPath(v) === false) return;
+
             bstRoot = bstInsert(bstRoot, v);
             bstRender(v);
         },
+
         async remove(value) {
+            if (!bstRoot) {
+                alert("The tree is empty.");
+                return;
+            }
+
             const v = Number(value);
-            await bstHighlightPath(v);
+            let node = bstRoot;
+
+            while (node && node.value !== v) {
+                node = v < node.value ? node.left : node.right;
+            }
+
+            if (!node) {
+                alert("Value not found.");
+                return;
+            }
+
+            if (await bstHighlightPath(v) === false) return;
+
             bstRoot = bstDelete(bstRoot, v);
             bstRender();
         }
@@ -275,7 +330,17 @@ document.getElementById("add").addEventListener("click", () => {
 
 document.getElementById("remove").addEventListener("click", () => {
     const text = removeInput.value.trim();
-    current.remove(text === "" ? "" : String(Number(text)));
+    const needsValue =
+        title.textContent === "Linked List" ||
+        title.textContent === "Binary Search Tree";
+
+    if (needsValue && (text === "" || !Number.isFinite(Number(text)))) {
+        window.alert("Enter a valid number to remove.");
+        removeInput.focus();
+        return;
+    }
+
+    current.remove(needsValue ? String(Number(text)) : "");
     removeInput.value = "";
     removeInput.focus();
 });
@@ -302,7 +367,14 @@ tabs.forEach(tab => {
 
 // ---------- Refresh button ---------
 document.getElementById("refresh").addEventListener("click", () => {
-    selectStructure(title.textContent);   // re-selects the current structure
+    if (!window.confirm("Reset the current data structure?")) {
+        return;
+    }
+
+
+    animationVersion++;
+    bstRoot = null;
+    selectStructure(title.textContent);
     addInput.value = "";
     removeInput.value = "";
 });
