@@ -1,0 +1,298 @@
+header {
+    background-color: tan;
+    border: solid tan;
+    margin: -8px;
+}
+
+
+.main-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px
+}
+
+.logo {
+    display: flex;
+}
+
+.logo-img {
+    width: 200px;
+}
+
+.main-navigation > ul {
+    list-style: none;
+    display: flex;
+    padding-right: 30px;
+    margin: -2px;
+    gap: 50px
+}
+
+.speed {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 10px;
+    background-color: tan;
+
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.speed:hover {
+    background-color: rgb(170, 119, 53);
+
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.data-dropdown {
+    border: none;
+    border-radius: 5px;
+    padding: 6px 10px;
+    background-color: tan;
+
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.data-dropdown:hover {
+    background-color: rgb(170, 119, 53);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 140px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 8px 12px;
+    color: black;
+    text-decoration: none;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/*main section*/
+main {
+    padding: 20px 30px;
+}
+
+/* action div */
+.action {
+    padding-top: 5px;
+}
+
+.action-button {
+    margin-right: 20px;
+    display: inline-flex;
+    border: none;
+    border-radius: 5px;
+    background-color: tan;
+    padding: 5px 10px;
+    font-size: 15px;
+    
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.action-button:hover {
+    background-color: rgb(170, 119, 53);
+}
+
+
+/* controls div */
+.refresh {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 40px;
+}
+
+.controls {
+    margin-top: 30px;
+}
+
+.controls > ul {
+    list-style: none;
+    padding-left: 0px;
+}
+
+.controls > ul > li + li {
+    margin-top: 10px;
+}
+
+input {
+    height: 22px;
+    padding: 0px 100px;
+    border: 1px solid tan;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/*stage div */
+.stage {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 400px;
+    padding: 20px;
+    border: 2px solid;
+    overflow-x: auto;
+    flex: 2 1 0;          /* takes up 2/3 of the width */
+    min-width: 0;     /* lets overflow-x scroll work inside flex */
+    /* keep your existing display, min-height, padding, border, etc. */
+}
+
+.visualizer-layout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.side-panel {
+    flex: 1 1 0;
+    border: 2px solid;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 2px solid;
+}
+
+.tab {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+}
+
+.tab + .tab {
+    border-left: 2px solid;
+}
+
+.tab.active {
+    font-weight: bold;
+    background: #eee;
+}
+
+.tab-content {
+    display: none;
+    padding: 10px 15px;
+    overflow: auto;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-content pre {
+    margin: 0;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.node {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid;
+    flex-shrink: 0;
+    animation: pop-in 0.3s ease-out;
+}
+
+.node.removing {
+    animation: pop-out 0.3s ease-in forwards;
+}
+
+@keyframes pop-in {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pop-out {
+    from { transform: scale(1); opacity: 1; }
+    to   { transform: scale(0); opacity: 0; }
+}
+
+/* linked list */
+.stage.linked-list {
+    gap: 0;
+}
+
+.ll-item {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    animation: pop-in 0.3s ease-in fowards;
+}
+
+.ll-item.removing {
+    animation: pop-out 0.3s ease-in fowards;
+}
+
+.ll-item .node {
+    animation: none;
+    transition: background 0.2s;
+}
+
+.arrow {
+    font-size: 28px;
+    padding: 0 10px;
+}
+
+/* the last node has nothing to point at, so hide its arrow */
+.ll-item:last-child .arrow {
+    display: none;
+}
+
+.node.highlight {
+    background: tan;
+}
+
+/* binary search tree*/
+.stage.bst {
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.stage.bst .node { animation: none; }
+.stage.bst .node.new { animation: pop-in 0.3s ease-out; }
+
+.bst-subtree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bst-children {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    align-items: flex-start;
+}
+
+.bst-spacer { width: 60px; }
