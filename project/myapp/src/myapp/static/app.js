@@ -220,6 +220,7 @@ function pop(stack) {
     },
 
     "Queue": {
+        stageClass: "queue",
         code: `function enqueue(queue, value) {
   queue.push(value);
 }
@@ -237,7 +238,6 @@ function dequeue(queue) {
             stage.appendChild(createNode(value));
         },
         remove() {
-            // always removes the front (first) node
             const front = stage.querySelector(".node:not(.removing)");
 
             if (front) {
@@ -245,6 +245,14 @@ function dequeue(queue) {
             } else {
                 alert("The queue is empty.");
             }
+        },
+
+        iterate() {
+            const nodes = [...stage.querySelectorAll(".node:not(.removing)")];
+            const index = nodes.findIndex(node => node.classList.contains("queue-current"));
+
+            nodes[index]?.classList.remove("queue-current");
+            nodes[index + 1]?.classList.add("queue-current");
         }
     },
 
@@ -351,7 +359,9 @@ addInput.addEventListener("keydown", (e) => {
 removeInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") document.getElementById("remove").click();
 });
-
+document.getElementById("iterate").addEventListener("click", () => {
+    current.iterate?.();
+});
 // ---------- Tabs ----------
 const tabs = document.querySelectorAll(".tab");
 const panels = document.querySelectorAll(".tab-content");
