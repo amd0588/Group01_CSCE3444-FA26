@@ -225,14 +225,29 @@ function pop(stack) {
                 busy = false;
             }
         },
-        remove() {
-            // always removes the top (last) node
-            const top = stage.querySelector(".node:last-child:not(.removing)");
+        async remove() {
+            if (busy) return;
+            busy = true;
+            const version = animationVersion;
 
-            if (top) {
+            try {
+                // Always targets the last child (the top of the stack)
+                const top = stage.querySelector(".node:last-child:not(.removing)");
+
+                if (!top) {
+                    alert("The stack is empty.");
+                    return;
+                }
+
+                // Highlight top element before removing
+                top.classList.add("highlight");
+                await sleep(400);
+                if (version !== animationVersion) return;
+
                 removeNode(top);
-            } else {
-                alert("The stack is empty.");
+                await sleep(300); // Wait for removal animation to finish
+            } finally {
+                busy = false;
             }
         }
     },
