@@ -50,6 +50,16 @@ function createListItem(value) {
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+// Moves the iterate marker one element forward through `nodes` (in order).
+// After the last element the marker clears, so the next click starts over.
+function advanceIterator(nodes) {
+    const index = nodes.findIndex(n => n.classList.contains("iterate-current"));
+    nodes[index]?.classList.remove("iterate-current");
+    const next = nodes[index + 1];
+    next?.classList.add("iterate-current");
+    return next;
+}
+
 let bstRoot = null;
 
 //takes care of the inser
@@ -143,7 +153,13 @@ Link the last node to the new node.
 Search from the head for the value.
 If it is the head, move head to the next node.
 Otherwise, link the previous node to the next node.
-If no match exists, report "Value not found."`,
+If no match exists, report "Value not found."
+
+// Iterate (one step per click):
+current = head
+while current is not null:
+    visit current.value
+    current = current.next`,
         description: `<h2>Linked List</h2>
 <p>A linked list stores values in nodes, and each node points to the next one.</p>
 <ul>
@@ -194,6 +210,15 @@ If no match exists, report "Value not found."`,
             } finally {
                 busy = false;
             }
+        },
+
+        iterate() {
+            const boxes = [...stage.querySelectorAll(".ll-item:not(.removing) .node")];
+            if (boxes.length === 0) {
+                alert("The linked list is empty.");
+                return;
+            }
+            advanceIterator(boxes);
         }
     },
 

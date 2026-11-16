@@ -273,6 +273,13 @@ input {
     background: tan;
 }
 
+/* current position of the Iterate button */
+.node.iterate-current {
+    background: tan;
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
 /* binary search tree*/
 .stage.bst {
     justify-content: center;
