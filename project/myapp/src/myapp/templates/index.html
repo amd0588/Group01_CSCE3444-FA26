@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>DSExplorer</title>
+        <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> Change to this when finished testing -->
+        <link rel="stylesheet" href="../static/style.css">
+    </head>
+    <body>
+
+        <header>
+        <!-- The semantic navigation container -->
+            <nav class="main-navigation">
+                <div class="logo"><img class="logo-img" src="../static/images/dsexplorer-logo-tan.svg" alt="DSExplorer"></div> <!--<img src="{{ url_for('static', filename='images/dsexplorer-logo-tan.svg') }}" alt="Logo">-->
+                <ul>
+                    <li class="dropdown">
+                        <button class="data-dropdown">Data Structures</button>
+                        <div class="dropdown-content">
+                            <a href="#">Linked List</a>
+                            <a href="#">Queue</a>
+                            <a href="#">Stack</a>
+                            <a href="#">Binary Search Tree</a>
+                        </div>
+                    </li>
+                    <li>
+                        <select id="speed" name="speed" class="speed">
+                            <option data-speed="Description">Speed Level</option>
+                            <option value="1x" data-speed="Single Speed">Speed 1x</option>
+                            <option value="2x" data-speed="Double Speed">Speed 2x</option>
+                        </select>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section class="visualizer">
+                <h1 id="data-structure">Linked List</h1>
+
+                <div class="visualizer-layout">
+                    <div class="stage" id="stage">
+                    <!-- boxes get added here by JS -->
+                    </div>
+
+                    <aside class="side-panel">
+                        <div class="tabs" role="tablist">
+                            <button class="tab active" role="tab" data-target="code-view">Code</button>
+                            <button class="tab" role="tab" data-target="description-view">Description</button>
+                        </div>
+
+                        <div class="tab-content active" id="code-view">
+                            <pre><code id="code">function add(arr, value) {
+                        arr.push(value);
+                        }
+
+                        function remove(arr) {
+                        return arr.pop();
+                        }</code></pre>
+                        </div>
+
+                        <div class="tab-content" id="description-view">
+                            <h2>Array</h2>
+                            <p>An array stores elements in contiguous memory, so any element can be accessed instantly by its index.</p>
+                            <ul>
+                                <li>Access: O(1)</li>
+                                <li>Append / remove at end: O(1)</li>
+                                <li>Insert / remove in the middle: O(n)</li>
+                            </ul>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="action">
+                    <button id="iterate" class="action-button">Iterate</button>
+                </div>
+
+                <div class="controls">
+                    <ul>
+                        <li><label for="add-value" class="visually-hidden" style="margin-right: 5px;">Value to add</label><input type="text" id="add-value" name="add-value" placeholder="Enter value e.g. 30"> <button id="add" class="action-button">Add element</button></li>
+                        <li><label for="remove-value" class="visually-hidden" style="margin-right: 5px;">Value to remove</label><input type="text" id="remove-value" name="remove-value" placeholder="Enter value e.g. 30"> <button id="remove" class="action-button">Remove element</button></li>
+                    </ul>
+
+                    <div class="refresh">
+                        <button id="refresh" class="action-button">Refresh</button>
+                    </div>                    
+                </div>
+            </section>
+        </main>
+
+        <!-- change back to this when done building <script src="{{ url_for('static', filename='app.js') }}"></script> -->
+        <script src="../static/app.js"></script>
+    </body>
+</html>
