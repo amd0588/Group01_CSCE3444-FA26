@@ -334,3 +334,12 @@ input {
     justify-content: flex-start;
     padding: 20px;
 }
+
+.node.stack-current {
+    background-color: tan; /* Distinct orange highlight for stack stepping */
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+    color: black;
+    transform: scale(1.05);
+    transition: all 0.2s ease;
+}

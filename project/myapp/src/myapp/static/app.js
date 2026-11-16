@@ -289,6 +289,26 @@ function pop(stack) {
             } finally {
                 busy = false;
             }
+        },
+        iterate() {
+            const nodes = [...stage.querySelectorAll(".node:not(.removing)")];
+            if (nodes.length === 0) return;
+
+            // Find currently highlighted node
+            const index = nodes.findIndex(node => node.classList.contains("stack-current"));
+
+            // Remove current highlight
+            if (index !== -1) {
+                nodes[index].classList.remove("stack-current");
+            }
+
+            // Move to the next node (or loop back to the start)
+            const nextIndex = index + 1;
+            if (nextIndex < nodes.length) {
+                nodes[nextIndex].classList.add("stack-current");
+            } else {
+                // Reached the end, unselects or loops back (here it resets cleanly)
+            }
         }
     },
 
