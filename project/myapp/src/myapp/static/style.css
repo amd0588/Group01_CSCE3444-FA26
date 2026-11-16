@@ -318,3 +318,12 @@ input {
     outline: 2px solid currentColor;
     outline-offset: 2px;
 }
+
+.stage.stack {
+    display: flex;
+    flex-direction: column-reverse; /* Puts newer items at the top */
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+    padding: 20px;
+}

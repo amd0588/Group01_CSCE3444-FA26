@@ -191,6 +191,7 @@ If no match exists, report "Value not found."`,
     },
 
     "Stack": {
+        stageClass: "stack",
         code: `function push(stack, value) {
   stack.push(value);
 }
@@ -204,8 +205,25 @@ function pop(stack) {
   <li>Push: O(1)</li>
   <li>Pop: O(1)</li>
 </ul>`,
-        add(value) {
-            stage.appendChild(createNode(value));
+        async add(value) {
+            if (busy) return;
+            busy = true;
+            const version = animationVersion;
+
+            try {
+                // 1. Create and append the node directly to the stage
+                const node = createNode(value);
+                stage.appendChild(node);
+
+                // 2. Briefly highlight the new top element
+                node.classList.add("highlight");
+                await sleep(400);
+                if (version !== animationVersion) return;
+                
+                node.classList.remove("highlight");
+            } finally {
+                busy = false;
+            }
         },
         remove() {
             // always removes the top (last) node
