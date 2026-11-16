@@ -1,5 +1,12 @@
 let busy = false;
 let animationVersion = 0;
+
+// ---------- Animation speed ----------
+// Every animation step waits BASE_STEP_MS / speedMultiplier, and the CSS
+// animations divide their durations by --speed, so one switch controls both.
+const BASE_STEP_MS = 400;
+let speedMultiplier = 1;
+const stepDelay = () => BASE_STEP_MS / speedMultiplier;
 // ---------- Shared elements ----------
 const stage = document.getElementById("stage");
 const addInput = document.getElementById("add-value");
@@ -18,7 +25,7 @@ function createNode(value) {
 
 function removeNode(node) {
     node.classList.add("removing");
-    setTimeout(() => node.remove(), 300)
+    setTimeout(() => node.remove(), 300 / speedMultiplier);
     node.addEventListener("animationend", (e) => {
         if (e.target == node) node.remove();
     });
@@ -108,7 +115,7 @@ async function bstHighlightPath(value) {
         if (!box) return false;
 
         box.classList.add("highlight");
-        await sleep(400);
+        await sleep(stepDelay());
         box.classList.remove("highlight");
 
         if (version !== animationVersion) return false;
@@ -150,7 +157,7 @@ If no match exists, report "Value not found."`,
             for (const item of items) {
                 const box = item.querySelector(".node");
                 box.classList.add("highlight");
-                await sleep(400);
+                await sleep(stepDelay());
 
                 if (version !== animationVersion) return;
                 box.classList.remove("highlight");
@@ -173,7 +180,7 @@ If no match exists, report "Value not found."`,
                 for (const item of items) {
                     const box = item.querySelector(".node");
                     box.classList.add("highlight");
-                    await sleep(400);
+                    await sleep(stepDelay());
                     if (version !== animationVersion) return;
                     box.classList.remove("highlight");
 
@@ -217,7 +224,7 @@ function pop(stack) {
 
                 // 2. Briefly highlight the new top element
                 node.classList.add("highlight");
-                await sleep(400);
+                await sleep(stepDelay());
                 if (version !== animationVersion) return;
                 
                 node.classList.remove("highlight");
@@ -380,6 +387,18 @@ removeInput.addEventListener("keydown", (e) => {
 document.getElementById("iterate").addEventListener("click", () => {
     current.iterate?.();
 });
+// ---------- Speed switch ----------
+const speedSelect = document.getElementById("speed");
+
+function applySpeed() {
+    const multiplier = parseFloat(speedSelect.value);   // "2x" -> 2, placeholder -> NaN
+    speedMultiplier = Number.isFinite(multiplier) && multiplier > 0 ? multiplier : 1;
+    document.documentElement.style.setProperty("--speed", speedMultiplier);
+}
+
+speedSelect.addEventListener("change", applySpeed);
+applySpeed();   // browsers can restore the previous selection on reload
+
 // ---------- Tabs ----------
 const tabs = document.querySelectorAll(".tab");
 const panels = document.querySelectorAll(".tab-content");

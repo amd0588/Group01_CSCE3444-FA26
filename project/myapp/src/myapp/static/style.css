@@ -221,11 +221,11 @@ input {
     justify-content: center;
     border: 2px solid;
     flex-shrink: 0;
-    animation: pop-in 0.3s ease-out;
+    animation: pop-in calc(0.3s / var(--speed, 1)) ease-out;
 }
 
 .node.removing {
-    animation: pop-out 0.3s ease-in forwards;
+    animation: pop-out calc(0.3s / var(--speed, 1)) ease-in forwards;
 }
 
 @keyframes pop-in {
@@ -247,16 +247,16 @@ input {
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    animation: pop-in 0.3s ease-in fowards;
+    animation: pop-in calc(0.3s / var(--speed, 1)) ease-in forwards;
 }
 
 .ll-item.removing {
-    animation: pop-out 0.3s ease-in fowards;
+    animation: pop-out calc(0.3s / var(--speed, 1)) ease-in forwards;
 }
 
 .ll-item .node {
     animation: none;
-    transition: background 0.2s;
+    transition: background calc(0.2s / var(--speed, 1));
 }
 
 .arrow {
@@ -280,7 +280,7 @@ input {
 }
 
 .stage.bst .node { animation: none; }
-.stage.bst .node.new { animation: pop-in 0.3s ease-out; }
+.stage.bst .node.new { animation: pop-in calc(0.3s / var(--speed, 1)) ease-out; }
 
 .bst-subtree {
     display: flex;
@@ -297,11 +297,11 @@ input {
 
 .bst-spacer { width: 60px; }
 .stage.queue .node {
-    animation: queue-enter 0.3s ease-out;
+    animation: queue-enter calc(0.3s / var(--speed, 1)) ease-out;
 }
 
 .stage.queue .node.removing {
-    animation: queue-exit 0.3s ease-in forwards;
+    animation: queue-exit calc(0.3s / var(--speed, 1)) ease-in forwards;
 }
 
 @keyframes queue-enter {
