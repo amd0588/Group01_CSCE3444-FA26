@@ -296,3 +296,11 @@ input {
 }
 
 .bst-spacer { width: 60px; }
+.stage.queue .node {
+    animation: queue-enter 0.3s ease-out;
+}
+
+@keyframes queue-enter {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}

@@ -220,6 +220,7 @@ function pop(stack) {
     },
 
     "Queue": {
+        stageClass: "queue",
         code: `function enqueue(queue, value) {
   queue.push(value);
 }
