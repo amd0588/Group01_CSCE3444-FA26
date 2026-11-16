@@ -296,3 +296,25 @@ input {
 }
 
 .bst-spacer { width: 60px; }
+.stage.queue .node {
+    animation: queue-enter 0.3s ease-out;
+}
+
+.stage.queue .node.removing {
+    animation: queue-exit 0.3s ease-in forwards;
+}
+
+@keyframes queue-enter {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes queue-exit {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(-20px); }
+}
+.stage.queue .node.queue-current {
+    background: tan;
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
