@@ -84,6 +84,14 @@ function bstDelete(node, value) {
     }
     return node;
 }
+//in-order traversal: left subtree, node, right subtree (gives sorted order)
+function bstInOrder(node, out = []) {
+    if (!node) return out;
+    bstInOrder(node.left, out);
+    out.push(node.value);
+    bstInOrder(node.right, out);
+    return out;
+}
 //builds the tree
 function bstBuild(node, newValue) {
     const subtree = document.createElement("div");
@@ -312,7 +320,16 @@ function dequeue(queue) {
 bstRoot = bstInsert(bstRoot, value);
 
 // Delete a value and keep the updated root.
-bstRoot = bstDelete(bstRoot, value);`,
+bstRoot = bstDelete(bstRoot, value);
+
+// Iterate in-order = sorted order
+// (one node per click):
+function inOrder(node) {
+  if (!node) return;
+  inOrder(node.left);
+  visit(node.value);
+  inOrder(node.right);
+}`,
         description: `<h2>Binary Search Tree</h2>
         <p>L</p>
         <ul>
@@ -350,6 +367,17 @@ bstRoot = bstDelete(bstRoot, value);`,
 
             bstRoot = bstDelete(bstRoot, v);
             bstRender();
+        },
+
+        iterate() {
+            if (!bstRoot) {
+                alert("The tree is empty.");
+                return;
+            }
+            const boxes = bstInOrder(bstRoot)
+                .map(v => stage.querySelector(`[data-value="${v}"]`))
+                .filter(Boolean);
+            advanceIterator(boxes);
         }
     }
 };
