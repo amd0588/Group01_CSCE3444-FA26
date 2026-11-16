@@ -137,7 +137,7 @@ Search from the head for the value.
 If it is the head, move head to the next node.
 Otherwise, link the previous node to the next node.
 If no match exists, report "Value not found."`,
-        description: `<h3>Linked List</h3>
+        description: `<h2>Linked List</h2>
 <p>A linked list stores values in nodes, and each node points to the next one.</p>
 <ul>
   <li>Insert / remove at head: O(1)</li>
@@ -198,7 +198,7 @@ If no match exists, report "Value not found."`,
 function pop(stack) {
   return stack.pop();
 }`,
-        description: `<h3>Stack</h3>
+        description: `<h2>Stack</h2>
 <p>A stack is last-in, first-out (LIFO). You only add and remove at the top.</p>
 <ul>
   <li>Push: O(1)</li>
@@ -228,7 +228,7 @@ function pop(stack) {
 function dequeue(queue) {
   return queue.shift();
 }`,
-        description: `<h3>Queue</h3>
+        description: `<h2>Queue</h2>
 <p>A queue is first-in, first-out (FIFO). Add at the back, remove from the front.</p>
 <ul>
   <li>Enqueue: O(1)</li>
@@ -263,7 +263,7 @@ bstRoot = bstInsert(bstRoot, value);
 
 // Delete a value and keep the updated root.
 bstRoot = bstDelete(bstRoot, value);`,
-        description: `<h3>Binary Search Tree</h3>
+        description: `<h2>Binary Search Tree</h2>
         <p>L</p>
         <ul>
             <li>add</li>

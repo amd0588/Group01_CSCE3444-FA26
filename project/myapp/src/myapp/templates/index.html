@@ -24,8 +24,9 @@
                     </li>
                     <li>
                         <select id="speed" name="speed" class="speed">
-                            <option value="1x">Speed 1x</option>
-                            <option value="2x">Speed 2x</option>
+                            <option data-speed="Description">Speed Level</option>
+                            <option value="1x" data-speed="Single Speed">Speed 1x</option>
+                            <option value="2x" data-speed="Double Speed">Speed 2x</option>
                         </select>
                     </li>
                 </ul>
@@ -34,7 +35,7 @@
 
         <main>
             <section class="visualizer">
-                <h2 id="data-structure">Linked List</h2>
+                <h1 id="data-structure">Linked List</h1>
 
                 <div class="visualizer-layout">
                     <div class="stage" id="stage">
@@ -58,7 +59,7 @@
                         </div>
 
                         <div class="tab-content" id="description-view">
-                            <h3>Array</h3>
+                            <h2>Array</h2>
                             <p>An array stores elements in contiguous memory, so any element can be accessed instantly by its index.</p>
                             <ul>
                                 <li>Access: O(1)</li>
@@ -76,8 +77,8 @@
 
                 <div class="controls">
                     <ul>
-                        <li><input type="text" id="add-value" name="add-value" placeholder="Enter value e.g. 30"> <button id="add" class="action-button">Add element</button></li>
-                        <li><input type="text" id="remove-value" name="remove-value" placeholder="Enter value e.g. 30"> <button id="remove" class="action-button">Remove element</button></li>
+                        <li><label for="add-value" class="visually-hidden">Value to add</label><input type="text" id="add-value" name="add-value" placeholder="Enter value e.g. 30"> <button id="add" class="action-button">Add element</button></li>
+                        <li><label for="remove-value" class="visually-hidden">Value to remove</label><input type="text" id="remove-value" name="remove-value" placeholder="Enter value e.g. 30"> <button id="remove" class="action-button">Remove element</button></li>
                     </ul>
 
                     <div class="refresh">
