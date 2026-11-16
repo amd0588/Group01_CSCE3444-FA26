@@ -149,30 +149,25 @@ async function bstHighlightPath(value) {
 const structures = {
     "Linked List": {
         stageClass: "linked-list",
-        code: `// Linked list pseudocode
+        code: `// Insert a value at the tail of the list.
+llInsert(head, value);
 
-// Add a value:
-Create a new node containing the value.
-If the list is empty, make it the head.
-Otherwise, follow next pointers to the last node.
-Link the last node to the new node.
+// Delete the first node matching the value.
+llDelete(head, value);
 
-// Remove the first matching value:
-Search from the head for the value.
-If it is the head, move head to the next node.
-Otherwise, link the previous node to the next node.
-If no match exists, report "Value not found."
-
-// Iterate (one step per click):
-current = head
-while current is not null:
-    visit current.value
-    current = current.next`,
+// Iterate from head to tail
+// (one node per click):
+function traverse(node) {
+  while (node !== null) {
+    visit(node.value);
+    node = node.next;
+  }
+}`,
         description: `<h2>Linked List</h2>
-<p>A linked list stores values in nodes, and each node points to the next one.</p>
+<p>A linked list stores values in sequential nodes, where each node points to the next one in the chain.</p>
 <ul>
-  <li>Insert / remove at head: O(1)</li>
-  <li>Search: O(n)</li>
+  <li>Insert / Remove at Head: O(1)</li>
+  <li>Search / Traversal: O(n)</li>
 </ul>`,
         async add(value) {
             const version = animationVersion;
@@ -232,18 +227,25 @@ while current is not null:
 
     "Stack": {
         stageClass: "stack",
-        code: `function push(stack, value) {
-  stack.push(value);
-}
+        code: `// Push a value onto the top of the stack.
+stack.push(value);
 
-function pop(stack) {
-  return stack.pop();
+// Pop and return the top value.
+stack.pop();
+
+// Iterate from top to bottom
+// (one node per click):
+function iterateStack(stack) {
+  for (let i = stack.length - 1; i >= 0; i--) {
+    visit(stack[i]);
+  }
 }`,
         description: `<h2>Stack</h2>
-<p>A stack is last-in, first-out (LIFO). You only add and remove at the top.</p>
+<p>A stack is a Last-In, First-Out (LIFO) data structure. Elements are added and removed exclusively at the top.</p>
 <ul>
-  <li>Push: O(1)</li>
-  <li>Pop: O(1)</li>
+  <li>Push (Add): O(1)</li>
+  <li>Pop (Remove): O(1)</li>
+  <li>Peek / Inspect Top: O(1)</li>
 </ul>`,
         async add(value) {
             if (busy) return;
@@ -251,16 +253,17 @@ function pop(stack) {
             const version = animationVersion;
 
             try {
-                // 1. Create and append the node directly to the stage
                 const node = createNode(value);
+                // Apply the drop-down entry class instead of generic .new
+                node.classList.add("new-drop");
                 stage.appendChild(node);
 
-                // 2. Briefly highlight the new top element
-                node.classList.add("highlight");
+                // Wait for the drop animation to finish before highlighting
                 await sleep(stepDelay());
                 if (version !== animationVersion) return;
-                
-                node.classList.remove("highlight");
+
+                node.classList.remove("new-drop");
+                await highlightNode(node, version);
             } finally {
                 busy = false;
             }
@@ -314,18 +317,24 @@ function pop(stack) {
 
     "Queue": {
         stageClass: "queue",
-        code: `function enqueue(queue, value) {
-  queue.push(value);
-}
+        code: `// Enqueue a value at the back of the queue.
+queue.enqueue(value);
 
-function dequeue(queue) {
-  return queue.shift();
+// Dequeue and return the front value.
+queue.dequeue();
+
+// Iterate from front to back
+// (one node per click):
+function iterateQueue(queue) {
+  for (let i = 0; i < queue.length; i++) {
+    visit(queue[i]);
+  }
 }`,
         description: `<h2>Queue</h2>
-<p>A queue is first-in, first-out (FIFO). Add at the back, remove from the front.</p>
+<p>A queue is a First-In, First-Out (FIFO) data structure. Elements are added at the back and removed from the front.</p>
 <ul>
-  <li>Enqueue: O(1)</li>
-  <li>Dequeue: O(1)</li>
+  <li>Enqueue (Add): O(1)</li>
+  <li>Dequeue (Remove): O(1)</li>
 </ul>`,
         add(value) {
             stage.appendChild(createNode(value));
@@ -366,11 +375,11 @@ function inOrder(node) {
   inOrder(node.right);
 }`,
         description: `<h2>Binary Search Tree</h2>
-        <p>L</p>
-        <ul>
-            <li>add</li>
-            <li>delete</li>
-        </ul>`,
+<p>A binary search tree keeps smaller values to the left and larger values to the right of each parent node.</p>
+<ul>
+  <li>Insert / Delete / Search: O(log n) average</li>
+  <li>In-Order Traversal: Visits values in sorted order</li>
+</ul>`,
         async add(value) {
             const v = Number(value);
 
